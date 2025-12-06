@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="stats_background">#F0F4F8</color>
+    <color name="stats_card_background">#FFFFFF</color>
+    <color name="stats_text_primary">#1A2C42</color>
+    <color name="stats_text_secondary">#5A6978</color>
+    <color name="stats_revenue_color">#007AFF</color>
+    <color name="stats_inventory_color">#34C759</color>
+    <color name="dashboard_accent_orange">#FF9500</color>
+    <color name="dashboard_background">#F0F4F8</color>
+    <color name="dashboard_card_background">#FFFFFF</color>
+    <color name="dashboard_text_primary">#1A2C42</color>
+    <color name="dashboard_text_secondary">#5A6978</color>
+    <color name="dashboard_accent_blue">#007AFF</color>
+    <color name="dashboard_accent_green">#34C759</color>
+    <color name="status_processing_bg">#33007AFF</color>
+    <color name="status_processing_text">#004FC4</color>
+
+    <color name="status_shipping_bg">#33FF9500</color>
+    <color name="status_shipping_text">#C67600</color>
+
+    <color name="status_completed_bg">#3334C759</color>
+    <color name="status_completed_text">#20813A</color>
+
+    <color name="status_cancelled_bg">#33FF3B30</color>
+    <color name="status_cancelled_text">#C50A00</color>
+    <color name="invoice_background">#F0F4F8</color>
+    <color name="invoice_card_background">#FFFFFF</color>
+    <color name="invoice_text_primary">#1A2C42</color>
+    <color name="invoice_text_secondary">#5A6978</color>
+    <color name="invoice_accent_blue">#007AFF</color>
+
+    <color name="login_primary_text">#1A202C</color>
+    <color name="login_secondary_text">#4A5568</color>
+    <color name="login_accent_color">#3182CE</color>
+    <color name="login_card_background">#FFFFFF</color>
+
+    <color name="detail_background">#F8F9FA</color>
+    <color name="detail_card_background">#FFFFFF</color>
+    <color name="detail_primary_text">#212529</color>
+    <color name="detail_secondary_text">#6C757D</color>
+    <color name="detail_accent">#4D58FF</color>
+    <color name="detail_accent_dark">#3B46D9</color>
+    <color name="detail_rating_star">#FFB700</color>
+    <color name="bottom_sheet_background_color">#FFFFFF</color>
+    <color name="divider_color">#E5E7EB</color>
+
+    <color name="activity_background">#F8F9FA</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="primary_text_color">#212529</color>
+    <color name="secondary_text_color">#6C757D</color>
+    <color name="accent_color">#4D58FF</color>
+    <color name="accent_dark_color">#3B46D9</color>
+
+</resources>

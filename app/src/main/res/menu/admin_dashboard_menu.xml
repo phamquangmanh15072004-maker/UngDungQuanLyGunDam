@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Mục chính: Icon tài khoản trên Toolbar -->
+    <item
+        android:id="@+id/menu_account"
+        android:title="Tài khoản"
+        android:icon="@drawable/user_icon"
+        app:showAsAction="always">
+
+        <menu>
+
+            <group android:id="@+id/group_user_info">
+            </group>
+            <item
+                android:id="@+id/menu_view_profile"
+                android:title="Xem thông tin"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/menu_logout"
+                android:title="Đăng xuất"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+</menu>

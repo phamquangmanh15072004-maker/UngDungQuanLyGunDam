@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutActivity">
+
+    <!-- Thanh Toolbar giữ nguyên bên ngoài -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_about"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Khám Phá Thế Giới Gundam" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Tất cả nội dung cuộn được phải nằm TRONG NestedScrollView -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- === DÁN PHẦN GIỚI THIỆU CỬA HÀNG VÀO ĐÂY === -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorPrimaryContainer"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chào Mừng Bạn Đến Với Gundam Store!"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:lineSpacingExtra="4dp"
+                        android:text="Chúng tôi là cửa hàng chuyên cung cấp các mẫu mô hình Gunpla chính hãng từ Bandai. Với niềm đam mê bất tận, chúng tôi mong muốn mang đến cho cộng đồng những sản phẩm chất lượng nhất và một sân chơi để kết nối những người cùng sở thích." />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Khoảng trống cũng nên ở bên trong -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+            <!-- === KẾT THÚC PHẦN DI CHUYỂN === -->
+
+
+            <!-- Các phần còn lại giữ nguyên vị trí bên trong LinearLayout -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Các Mobile Suit Huyền Thoại"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+
+            <com.google.android.material.card.MaterialCardView style="@style/AboutCard">
+                <LinearLayout style="@style/AboutCardContent">
+                    <TextView style="@style/AboutCardTitle" android:text="RX-78-2 Gundam" />
+                    <TextView style="@style/AboutCardDescription" android:text="Biểu tượng bất tử và là cỗ máy Gundam đầu tiên xuất hiện trong series Mobile Suit Gundam (1979). Nó đã định hình nên toàn bộ thể loại 'Real Robot' với thiết kế quân sự thực tế, đặt nền móng cho tất cả các Gundam về sau."/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- GIỚI THIỆU VỀ Zaku II -->
+            <com.google.android.material.card.MaterialCardView style="@style/AboutCard">
+                <LinearLayout style="@style/AboutCardContent">
+                    <TextView style="@style/AboutCardTitle" android:text="MS-06F Zaku II" />
+                    <TextView style="@style/AboutCardDescription" android:text="Kẻ thù mang tính biểu tượng nhất của Gundam. Với thiết kế một mắt (mono-eye) đặc trưng, Zaku II là lực lượng chủ lực của phe Zeon và nổi tiếng đến mức nó cũng có lượng fan hùng hậu không kém gì các Gundam."/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- GIỚI THIỆU VỀ Wing Gundam Zero -->
+            <com.google.android.material.card.MaterialCardView style="@style/AboutCard">
+                <LinearLayout style="@style/AboutCardContent">
+                    <TextView style="@style/AboutCardTitle" android:text="Wing Gundam Zero (EW Ver.)" />
+                    <TextView style="@style/AboutCardDescription" android:text="Nổi tiếng với đôi cánh thiên thần tuyệt đẹp, đây là một trong những Gundam có thiết kế được yêu thích nhất mọi thời đại. Sức mạnh hủy diệt từ khẩu Twin Buster Rifle và hệ thống ZERO System đã biến nó thành một huyền thoại trong lòng người hâm mộ."/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Tìm Hiểu Về Các Dòng Gunpla"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_category" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

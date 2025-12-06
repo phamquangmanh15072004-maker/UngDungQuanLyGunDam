@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+<!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="android:progressTint">#FFC107</item>
+
+        <!-- Màu của nền các ngôi sao (khi chưa được chọn) -->
+        <item name="android:progressBackgroundTint">#BDBDBD</item> <!-- Một màu xám nhạt -->
+
+        <!-- Màu của các ngôi sao thứ cấp (dành cho stepSize < 1) -->
+        <item name="android:secondaryProgressTint">#FFC107</item>
+    </style>
+
+</resources>

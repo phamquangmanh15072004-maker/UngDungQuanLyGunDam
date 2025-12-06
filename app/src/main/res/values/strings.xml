@@ -1,0 +1,15 @@
+<resources>
+    <!-- Các chuỗi khác của bạn có thể đã có ở đây, ví dụ: <string name="app_name">UngDungQuanLyGunDam</string> -->
+
+    <!-- THÊM MẢNG NÀY VÀO -->
+    <string-array name="product_categories">
+        <item>MG</item>
+        <item>RG</item>
+        <item>PG</item>
+        <item>HG</item>
+        <item>Khác</item>
+    </string-array>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_cart"
+            android:icon="@drawable/ic_shopping"
+            android:title="Giỏ hàng" />
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/order"
+            android:title="Đơn hàng của tôi" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/user_icon"
+            android:title="Thông tin cá nhân" />
+    </group>
+
+    <item android:title="Hệ thống">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/about"
+                android:title="Giới Thiệu" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout"
+                android:title="Đăng xuất" />
+        </menu>
+    </item>
+</menu>

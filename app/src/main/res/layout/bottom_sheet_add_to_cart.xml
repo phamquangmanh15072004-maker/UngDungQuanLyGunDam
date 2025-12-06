@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thêm background bo tròn ở thẻ ngoài cùng -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/bottom_sheet_background">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Bo góc cho ảnh sản phẩm -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_product_image_sheet"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"/>
+
+        <TextView
+            android:id="@+id/tv_product_price_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/iv_product_image_sheet"
+            android:layout_marginStart="16dp"
+            android:text="159.000đ"
+            android:textColor="#FF0000"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_product_stock_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/iv_product_image_sheet"
+            android:layout_below="@id/tv_product_price_sheet"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Kho: 589"
+            android:textSize="14sp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Phần chọn số lượng -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số lượng"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Style lại nút giảm số lượng -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_decrease"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_quantity_background"
+                android:textColor="#546E7A"
+                android:textSize="20sp"
+                android:text="-"/>
+
+            <TextView
+                android:id="@+id/tv_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
+
+            <!-- Style lại nút tăng số lượng -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_increase"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_quantity_background"
+                android:textColor="#546E7A"
+                android:textSize="20sp"
+                android:text="+"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Style lại nút chính -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_add_to_cart_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Thêm vào giỏ hàng"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_background_accent"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"/>
+
+</LinearLayout>
