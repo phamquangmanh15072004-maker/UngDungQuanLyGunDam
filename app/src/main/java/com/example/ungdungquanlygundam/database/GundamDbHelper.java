@@ -860,7 +860,6 @@ public class GundamDbHelper extends SQLiteOpenHelper {
                 String cartId = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CART_ID));
                 db.update(TABLE_CART_ITEMS, values, COLUMN_CART_ID + " = ?", new String[]{cartId});
             } else {
-                // 2b. Nếu chưa có -> Thêm mới
                 values.put(COLUMN_CART_QUANTITY, quantity);
                 db.insert(TABLE_CART_ITEMS, null, values);
             }
@@ -885,7 +884,6 @@ public class GundamDbHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
 
             while (cursor.moveToNext()) {
-                // Lấy thông tin từ Product
                 int productId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_ID));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_NAME));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_DESCRIPTION));
@@ -897,12 +895,8 @@ public class GundamDbHelper extends SQLiteOpenHelper {
 
                 Product product = new Product(productId, name, description, price, imagePath, stock, category, modelPath);
 
-                // Lấy thông tin từ Cart
                 int cartId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CART_ID));
-                // Không cần lấy userId và productId từ cursor nữa vì đã có trong biến
                 int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CART_QUANTITY));
-
-                // --- SỬA LẠI CÁCH GỌI CONSTRUCTOR CartItem ---
                 cartItems.add(new CartItem(cartId, userId, productId, quantity, product));
             }
         } finally {
@@ -925,6 +919,15 @@ public class GundamDbHelper extends SQLiteOpenHelper {
         int rows = db.delete(TABLE_CART_ITEMS, COLUMN_CART_ID + " = ?", new String[]{String.valueOf(cartId)});
         return rows > 0;
     }
+    public boolean clearCart(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.delete(TABLE_CART_ITEMS, COLUMN_CART_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     public boolean updateUserInfo(int userId, String address, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();    values.put(COLUMN_USER_ADDRESS, address);
@@ -944,25 +947,27 @@ public class GundamDbHelper extends SQLiteOpenHelper {
 
         return rowsAffected > 0;
     }
-    public boolean createOrder(int userId, String address, String phone, List<CartItem> cartItems) {
+    public boolean createOrder(int userId, String address, String phone, List<CartItem> cartItems, boolean isFromCart) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.beginTransaction(); // Bắt đầu transaction để đảm bảo toàn vẹn dữ liệu
+        db.beginTransaction();
 
         if (cartItems == null || cartItems.isEmpty()) {
+            db.endTransaction();
             return false;
         }
+
         try {
             double totalAmount = 0;
             for (CartItem item : cartItems) {
                 totalAmount += item.getProduct().getPrice() * item.getQuantity();
             }
+
             ContentValues orderValues = new ContentValues();
             orderValues.put(COLUMN_ORDER_USER_ID, userId);
             orderValues.put(COLUMN_ORDER_TOTAL_AMOUNT, totalAmount);
             orderValues.put(COLUMN_ORDER_ADDRESS, address);
             orderValues.put(COLUMN_ORDER_PHONE, phone);
             orderValues.put(COLUMN_ORDER_STATUS, "Chờ xác nhận");
-
             String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
             orderValues.put(COLUMN_ORDER_DATE, currentDate);
 
@@ -972,28 +977,23 @@ public class GundamDbHelper extends SQLiteOpenHelper {
                 db.endTransaction();
                 return false;
             }
-
-            // 2. Với mỗi sản phẩm trong giỏ hàng, thêm một bản ghi vào `order_details`
             for (CartItem item : cartItems) {
                 ContentValues detailValues = new ContentValues();
                 detailValues.put(COLUMN_DETAIL_ORDER_ID, orderId);
                 detailValues.put(COLUMN_DETAIL_PRODUCT_ID, item.getProduct().getId());
                 detailValues.put(COLUMN_DETAIL_QUANTITY, item.getQuantity());
+
                 detailValues.put(COLUMN_DETAIL_PRICE, item.getProduct().getPrice());
 
-                if (db.insert(TABLE_ORDER_DETAILS, null, detailValues) == -1) {
+                long detailId = db.insert(TABLE_ORDER_DETAILS, null, detailValues);
+                if (detailId == -1) {
                     db.endTransaction();
                     return false;
                 }
             }
-            db.delete(TABLE_CART_ITEMS, COLUMN_CART_USER_ID + " = ?", new String[]{String.valueOf(userId)});
-
             db.setTransactionSuccessful();
             return true;
 
-        } catch (Exception e) {
-            Log.e("DB_ERROR", "Lỗi khi tạo đơn hàng: " + e.getMessage());
-            return false;
         } finally {
             db.endTransaction();
         }

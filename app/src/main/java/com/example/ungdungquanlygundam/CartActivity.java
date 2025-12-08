@@ -61,26 +61,43 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         bottomSummaryLayout = findViewById(R.id.bottom_summary_layout);
         rvCartItems.setLayoutManager(new LinearLayoutManager(this));
     }
+    // Trong file CartActivity.java
+// THAY THẾ TOÀN BỘ phương thức setupListeners
+
     private void setupListeners() {
         btnCheckout.setOnClickListener(v -> {
+            if (cartItemsList == null || cartItemsList.isEmpty()) {
+                Toast.makeText(this, "Giỏ hàng của bạn đang trống!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             double totalAmount = 0;
             for (CartItem item : cartItemsList) {
                 totalAmount += item.getProduct().getPrice() * item.getQuantity();
             }
-            if (totalAmount > 0 && currentUserId != -1) {
-                CheckoutBottomSheetFragment bottomSheet = CheckoutBottomSheetFragment.newInstance(currentUserId, totalAmount, cartItemsList);
+
+            if (currentUserId != -1) {
+                ArrayList<CartItem> itemsToCheckout = new ArrayList<>(cartItemsList);
+
+                CheckoutBottomSheetFragment bottomSheet = CheckoutBottomSheetFragment.newInstance(currentUserId, totalAmount, itemsToCheckout, false);
 
                 bottomSheet.setOrderPlacedListener(() -> {
-                    Toast.makeText(CartActivity.this, "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
-                    finish();
+                    dbHelper.clearCart(currentUserId);
+                    cartItemsList.clear();
+                    cartAdapter.notifyDataSetChanged();
+                    updateCartState();
+                    Toast.makeText(CartActivity.this, "Đặt hàng thành công! Giỏ hàng đã được dọn dẹp.", Toast.LENGTH_LONG).show();
+                    new android.os.Handler().postDelayed(
+                            () -> finish(),
+                            2000
+                    );
                 });
                 bottomSheet.show(getSupportFragmentManager(), "CheckoutBottomSheet");
 
-            } else {
-                Toast.makeText(this, "Giỏ hàng của bạn đang trống!", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_cart);
         setSupportActionBar(toolbar);
@@ -130,6 +147,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
         calculateTotalPrice(); // Cập nhật lại tổng tiền ngay lập tức
     }
 
+    // Trong file CartActivity.java
+// THAY THẾ TOÀN BỘ phương thức onItemDeleted
+
     @Override
     public void onItemDeleted(int cartId, int position) {
         new AlertDialog.Builder(this)
@@ -138,10 +158,19 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
                 .setPositiveButton("Xóa", (dialog, which) -> {
                     boolean deleted = dbHelper.deleteCartItem(cartId);
                     if (deleted) {
-                        cartItemsList.remove(position);
-                        cartAdapter.notifyItemRemoved(position);
-                        cartAdapter.notifyItemRangeChanged(position, cartItemsList.size());
-                        updateCartState(); // Cập nhật lại trạng thái giỏ hàng và tổng tiền
+                        // Đảm bảo vị trí hợp lệ trước khi xóa khỏi list
+                        if (position >= 0 && position < cartItemsList.size()) {
+                            cartItemsList.remove(position);
+                            cartAdapter.notifyItemRemoved(position);
+                            // Không cần notifyItemRangeChanged ở đây, nó có thể gây lỗi
+                        } else {
+                            // Nếu vị trí không hợp lệ, tải lại toàn bộ giỏ hàng cho chắc chắn
+                            loadCartItems();
+                            return;
+                        }
+
+                        // Cập nhật lại trạng thái (tổng tiền, giao diện trống...)
+                        updateCartState();
                         Toast.makeText(this, "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "Xóa thất bại", Toast.LENGTH_SHORT).show();
@@ -150,4 +179,5 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
                 .setNegativeButton("Hủy", null)
                 .show();
     }
+
 }

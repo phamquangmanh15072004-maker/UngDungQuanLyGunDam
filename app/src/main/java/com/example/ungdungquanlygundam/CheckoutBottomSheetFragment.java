@@ -42,13 +42,14 @@ public class CheckoutBottomSheetFragment extends BottomSheetDialogFragment {
     private EditText etCheckoutPhone, etCheckoutAddress;
     private LinearLayout layoutInfoDisplay, layoutInfoEdit;
     private Button btnPlaceOrder;
-
-    public static CheckoutBottomSheetFragment newInstance(int userId, double totalAmount, List<CartItem> cartItems) {
+    private boolean isBuyNowMode = false;
+    public static CheckoutBottomSheetFragment newInstance(int userId, double totalAmount, List<CartItem> cartItems,boolean isBuyNow) {
         CheckoutBottomSheetFragment fragment = new CheckoutBottomSheetFragment();
         Bundle args = new Bundle();
         args.putInt("USER_ID", userId);
         args.putDouble("TOTAL_AMOUNT", totalAmount);
         args.putParcelableArrayList("CART_ITEMS", new ArrayList<>(cartItems));
+        args.putBoolean("IS_BUY_NOW", isBuyNow);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +61,7 @@ public class CheckoutBottomSheetFragment extends BottomSheetDialogFragment {
             currentUserId = getArguments().getInt("USER_ID");
             totalAmount = getArguments().getDouble("TOTAL_AMOUNT");
             cartItems = getArguments().getParcelableArrayList("CART_ITEMS");
+            isBuyNowMode = getArguments().getBoolean("IS_BUY_NOW", false);
         }
         dbHelper = new GundamDbHelper(getContext());
     }
@@ -139,7 +141,7 @@ public class CheckoutBottomSheetFragment extends BottomSheetDialogFragment {
                 return;
             }
         }
-        boolean success = dbHelper.createOrder(currentUserId, address, phone, cartItems);
+        boolean success = dbHelper.createOrder(currentUserId, address, phone, cartItems, !isBuyNowMode);
 
         if (success) {
             for (CartItem item : cartItems) {
@@ -147,6 +149,9 @@ public class CheckoutBottomSheetFragment extends BottomSheetDialogFragment {
             }
 
             Toast.makeText(getContext(), "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+            if (orderPlacedListener != null) {
+                orderPlacedListener.onOrderPlaced();
+            }
             dismiss();
         } else {
             Toast.makeText(getContext(), "Đặt hàng thất bại, vui lòng thử lại.", Toast.LENGTH_SHORT).show();

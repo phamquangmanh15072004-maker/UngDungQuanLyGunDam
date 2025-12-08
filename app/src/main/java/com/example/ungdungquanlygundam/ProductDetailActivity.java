@@ -77,7 +77,13 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
             populateProductData(productID);
         }
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (productID != -1) {
+            populateProductData(productID);
+        }
+    }
     private void initViews() {
         viewPagerProductImages = findViewById(R.id.view_pager_product_images);
         tvProductName = findViewById(R.id.tv_product_name_detail);
@@ -149,18 +155,20 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
             AddToCartBottomSheetFragment quantitySheet = AddToCartBottomSheetFragment.newInstance(currentProduct, currentUserId);
             quantitySheet.setButtonText("Tiếp Tục");
             quantitySheet.setOnBuyNowListener(quantitySelected -> {
-                if (currentProduct.getStock() < quantitySelected) {
+                Product checkProduct = dbHelper.getProductById(productID);
+                if (checkProduct.getStock() < quantitySelected) {
                     Toast.makeText(this, "Số lượng trong kho không đủ", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 List<CartItem> buyNowItems = new ArrayList<>();
                 CartItem singleItem = new CartItem(currentProduct, quantitySelected, false); // isSelected không quan trọng ở đây
                 buyNowItems.add(singleItem);
-                double buyNowTotalAmount = currentProduct.getPrice() * quantitySelected;
+                double buyNowTotalAmount = checkProduct.getPrice() * quantitySelected;
                 CheckoutBottomSheetFragment checkoutSheet = CheckoutBottomSheetFragment.newInstance(
                         currentUserId,
                         buyNowTotalAmount,
-                        buyNowItems
+                        buyNowItems,
+                        true
                 );
                 checkoutSheet.setOrderPlacedListener(() -> {
                     Toast.makeText(this, "Mua hàng thành công!", Toast.LENGTH_LONG).show();
