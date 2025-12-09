@@ -19,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -103,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements ProductUserAdapte
         if (intent != null && intent.hasExtra("LOGGED_IN_USER_ID")) {
             loggedInUserId = intent.getIntExtra("LOGGED_IN_USER_ID", -1);
         }
-        // Khởi tạo ActivityResultLauncher
         productDetailLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -140,8 +140,6 @@ public class MainActivity extends AppCompatActivity implements ProductUserAdapte
                 loadProductsForPage(currentPage);
             }
         });
-
-        // Sự kiện cho nút "Trang sau"
         btnNextPage.setOnClickListener(v -> {
             if (currentPage < totalPages) {
                 currentPage++;
@@ -251,13 +249,11 @@ public class MainActivity extends AppCompatActivity implements ProductUserAdapte
                 intent.putExtra("LOGGED_IN_USER_ID", loggedInUserId);
                 startActivity(intent);
             } else {
-                // Trường hợp không xác định được người dùng
                 Toast.makeText(this, "Lỗi: Không thể mở giỏ hàng.", Toast.LENGTH_SHORT).show();
             }
         }
         else if (id == R.id.nav_orders){
             if (loggedInUserId != -1) {
-                // Mở màn hình "Đơn hàng của tôi"
                 Intent intent = new Intent(this, MyOrderActivity.class);
                 intent.putExtra("LOGGED_IN_USER_ID", loggedInUserId);
                 startActivity(intent);
@@ -281,11 +277,20 @@ public class MainActivity extends AppCompatActivity implements ProductUserAdapte
     }
 
     private void logout() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-        Toast.makeText(this, "Đăng xuất thành công!", Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận đăng xuất").setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                .setPositiveButton("Đồng ý", (dialog, which) -> {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Hủy", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setIcon(R.drawable.logout)
+                .show();
     }
 
     private void setupUserInNavHeader() {

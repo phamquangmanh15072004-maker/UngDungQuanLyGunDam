@@ -70,11 +70,9 @@ public class CheckoutBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_checkout, container, false);
-
         initViews(view);
         loadUserData();
         setupListeners();
-
         return view;
     }
 

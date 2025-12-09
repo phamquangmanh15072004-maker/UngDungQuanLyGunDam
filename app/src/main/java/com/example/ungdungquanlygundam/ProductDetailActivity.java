@@ -161,7 +161,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ReviewAd
                     return;
                 }
                 List<CartItem> buyNowItems = new ArrayList<>();
-                CartItem singleItem = new CartItem(currentProduct, quantitySelected, false); // isSelected không quan trọng ở đây
+                CartItem singleItem = new CartItem(currentProduct, quantitySelected, false);
                 buyNowItems.add(singleItem);
                 double buyNowTotalAmount = checkProduct.getPrice() * quantitySelected;
                 CheckoutBottomSheetFragment checkoutSheet = CheckoutBottomSheetFragment.newInstance(

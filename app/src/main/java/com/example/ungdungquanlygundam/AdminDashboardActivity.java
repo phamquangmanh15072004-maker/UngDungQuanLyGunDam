@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -58,13 +59,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 3. Xử lý khi nhấn vào "Quản lý Người dùng"
         cardManageUsers.setOnClickListener(v -> {
             Intent intent = new Intent(AdminDashboardActivity.this, UserManagementActivity.class);
             startActivity(intent);
         });
 
-        // 4. Xử lý khi nhấn vào "Xem Doanh thu"
         cardViewRevenue.setOnClickListener(v -> {
             Intent intent = new Intent(AdminDashboardActivity.this, RevenueStatsActivity.class);
             startActivity(intent);
@@ -74,17 +73,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-    // --- CÁC HÀM XỬ LÝ MENU ---
-
-    // Hàm này để "thổi phồng" (inflate) layout menu của bạn vào Toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.admin_dashboard_menu, menu);
         return true;
     }
-
-    // Hàm này được gọi khi người dùng nhấn vào một mục trong menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -96,22 +90,27 @@ public class AdminDashboardActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.menu_logout) {
-            // Xử lý khi nhấn "Đăng xuất"
+
             logout();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-    // Hàm thực hiện việc đăng xuất
     private void logout() {
-        // Tạo Intent để quay lại màn hình Login
-        Intent intent = new Intent(AdminDashboardActivity.this, LoginActivity.class);
-        // Xóa tất cả các Activity trước đó khỏi stack để người dùng không thể nhấn "Back" quay lại
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish(); // Đóng Activity hiện tại
-        Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận đăng xuất").setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                .setPositiveButton("Đồng ý", (dialog, which) -> {
+                    Intent intent = new Intent(AdminDashboardActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Hủy", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setIcon(R.drawable.logout)
+                .show();
     }
 }

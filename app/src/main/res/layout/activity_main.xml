@@ -181,8 +181,6 @@
                 android:src="@drawable/ic_right"
                 app:tint="?attr/colorPrimary" />
         </RelativeLayout>
-
-        <!-- DANH SÁCH SẢN PHẨM -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_products_user"
             android:layout_width="match_parent"
@@ -195,7 +193,6 @@
             app:spanCount="2"
             tools:listitem="@layout/item_product_user" />
 
-        <!-- VÒNG XOAY CHỜ (ProgressBar) -->
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyleLarge"
@@ -206,8 +203,6 @@
             tools:visibility="visible" />
 
     </RelativeLayout>
-
-    <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
