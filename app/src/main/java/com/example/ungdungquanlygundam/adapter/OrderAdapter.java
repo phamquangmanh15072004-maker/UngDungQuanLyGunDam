@@ -107,7 +107,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.btnCancel.setVisibility(View.VISIBLE);
             holder.btnCancel.setOnClickListener(v -> handleCancelOrder(holder, order));
             holder.btnViewInvoice.setVisibility(View.GONE);
-        } else {
+        } else if (!"Đã hủy".equalsIgnoreCase(status)) {
             holder.btnViewInvoice.setVisibility(View.VISIBLE);
             holder.btnViewInvoice.setOnClickListener(v -> viewInvoice(order.getId()));
         }
